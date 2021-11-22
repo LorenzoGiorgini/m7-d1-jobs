@@ -15,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/"  element={<Home />} />
         <Route path="/company/:companyId"  element={<Company />} />
+        <Route path="*" element={<div>404 Error</div>} />
       </Routes>
     </BrowserRouter>
   )
