@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import { useParams } from "react-router";
+import JobDescription from "../components/JobDescription";
 
 import SpinnerB from "../components/SpinnerB";
 
 export default function Company() {
 
-  const companyId = useParams().companyId;
+  const companyId = useParams().companyId
 
   const [company, setCompany] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
   const fetchCompanyInfo = async () => {
-    const request = await fetch(
-      "https://strive-jobs-api.herokuapp.com/jobs?company=" + { companyId }
-    )
+    const request = await fetch(`https://strive-jobs-api.herokuapp.com/jobs?company=${companyId}&limit=10`)
     if (request.ok) {
       const data = await request.json();
       console.log(data)
@@ -36,7 +35,9 @@ export default function Company() {
       ) : (
         <Container>
           <Row>
-            <h1>{"adad"}</h1>
+            {company.map((job) => (
+                <JobDescription job={job}/>
+            ))}
           </Row>
         </Container>
       )

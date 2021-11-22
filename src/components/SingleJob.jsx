@@ -8,6 +8,6 @@ export default function SingleJob(props) {
   const navigate = useNavigate()
 
   return (
-  <ListGroup.Item onClick={() => navigate(`/company/${props.job.company_name}`)}>{props.job.title + " " + props.job.company_name}</ListGroup.Item>
+    <ListGroup.Item onClick={() => navigate(`/company/${props.job.company_name}`)}>{props.job.title + " " + props.job.company_name}</ListGroup.Item>
   )
 }
