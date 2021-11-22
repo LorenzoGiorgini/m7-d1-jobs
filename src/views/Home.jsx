@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   FormControl,
@@ -26,6 +26,11 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+
+  useEffect(() => {
+    fetchJobs();
+  }, [search])
 
   return (
     <Container>
