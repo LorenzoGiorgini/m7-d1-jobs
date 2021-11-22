@@ -29,7 +29,9 @@ export default function Home() {
 
 
   useEffect(() => {
-    fetchJobs();
+    if(search !== "") {
+      fetchJobs();
+    }
   }, [search])
 
   return (
