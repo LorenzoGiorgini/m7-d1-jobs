@@ -11,7 +11,7 @@ import SingleJob from "../components/SingleJob";
 import SpinnerB from "../components/SpinnerB";
 
 import { connect } from "react-redux";
-import {IS_LOADING, STOP_LOADING} from "../redux/actions/actions";
+import {IS_LOADING, STOP_LOADING, SET_SEARCH} from "../redux/actions/actions";
 
 
 const mapStateToProps = (state) => {
@@ -33,18 +33,23 @@ const mapDispatchToProps = (dispatch) => ({
       type : STOP_LOADING,
       payload : false
     })
+  },
+  setSearch : (value) => {
+    dispatch({
+      type : SET_SEARCH,
+      payload : value
+    })
   }
 })
 
 const Home = (props) => {
-  const [search, setSearch] = useState("");
   
   const [jobs, setJobs] = useState([]);
 
   const fetchJobs = async () => {
     props.setLoading();
     const response = await fetch(
-      `https://strive-jobs-api.herokuapp.com/jobs?search=${search}&limit=10`
+      `https://strive-jobs-api.herokuapp.com/jobs?search=${props.home.search}&limit=10`
     );
     if (response.ok) {
       const data = await response.json();
@@ -55,10 +60,10 @@ const Home = (props) => {
 
 
   useEffect(() => {
-    if(search !== "") {
+    if(props.home.search !== "") {
       fetchJobs();
     }
-  }, [search])
+  }, [props.home.search])
 
   return (
     <Container>
@@ -67,9 +72,9 @@ const Home = (props) => {
           <FormControl
             type="text"
             placeholder="Search job offers"
-            value={search}
+            value={props.home.search}
             className="mr-sm-2"
-            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+            onChange={(e) => props.setSearch(e.target.value.toLowerCase())}
           />
           <Button variant="outline-success" onClick={fetchJobs}>
             Search
