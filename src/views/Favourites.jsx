@@ -15,7 +15,7 @@ function Favourites({favourites}) {
         ))}
     </div>
   ) : (
-    <div>
+    <div className="d-flex justify-content-center align-items-center w-100" style={{height: "90vh"}}>
       <h1>No Favourites</h1>
     </div>
   );

@@ -11,39 +11,36 @@ import SingleJob from "../components/SingleJob";
 import SpinnerB from "../components/SpinnerB";
 
 import { connect } from "react-redux";
-import {IS_LOADING, STOP_LOADING, SET_SEARCH} from "../redux/actions/actions";
-
+import { IS_LOADING, STOP_LOADING, SET_SEARCH } from "../redux/actions/actions";
 
 const mapStateToProps = (state) => {
   return {
-    home : state.home
-  }
-}
-
+    home: state.home,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  setLoading : () => {
+  setLoading: () => {
     dispatch({
-      type : IS_LOADING,
-      payload : true
-    })
+      type: IS_LOADING,
+      payload: true,
+    });
   },
-  stopLoading : () => {
+  stopLoading: () => {
     dispatch({
-      type : STOP_LOADING,
-      payload : false
-    })
+      type: STOP_LOADING,
+      payload: false,
+    });
   },
-  setSearch : (value) => {
+  setSearch: (value) => {
     dispatch({
-      type : SET_SEARCH,
-      payload : value
-    })
-  }
-})
+      type: SET_SEARCH,
+      payload: value,
+    });
+  },
+});
 
 const Home = (props) => {
-  
   const [jobs, setJobs] = useState([]);
 
   const fetchJobs = async () => {
@@ -58,17 +55,16 @@ const Home = (props) => {
     }
   };
 
-
   useEffect(() => {
-    if(props.home.search !== "") {
+    if (props.home.search !== "") {
       fetchJobs();
     }
-  }, [props.home.search])
+  }, [props.home.search]);
 
   return (
     <Container>
       <Row>
-        <div className="d-flex w-100 mt-5">
+        <div className="d-flex w-100 mt-5 flex-column">
           <FormControl
             type="text"
             placeholder="Search job offers"
@@ -76,30 +72,29 @@ const Home = (props) => {
             className="mr-sm-2"
             onChange={(e) => props.setSearch(e.target.value.toLowerCase())}
           />
-          <Button variant="outline-success" onClick={fetchJobs}>
-            Search
-          </Button>
-        </div>
-
-        {props.home.isLoading === true ? (
+          {props.home.isLoading === true ? (
             <div className="w-100 mt-5">
               <div className="d-flex align-items-center justify-content-center w-100">
                 <SpinnerB />
               </div>
             </div>
-        ) : (
-          <div className="d-flex flex-column">
-            <ListGroup>
-              {jobs.map((job) => {
-                return <SingleJob job={job} />;
-              })}
-            </ListGroup>
-          </div>
-        )}
+          ) : (
+            props.home.search !== "" && 
+            <div className="d-flex flex-column">
+              <ListGroup>
+                {jobs.map((job) => {
+                  return <SingleJob job={job} />;
+                })}
+              </ListGroup>
+            </div>
+          )}
+          <Button variant="outline-success" onClick={fetchJobs}>
+            Search
+          </Button>
+        </div>
       </Row>
     </Container>
   );
-}
+};
 
-
-export default connect(mapStateToProps , mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
