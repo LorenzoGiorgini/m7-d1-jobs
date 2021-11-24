@@ -10,8 +10,8 @@ const mapStateToProps = (state) => ({
 function Favourites({favourites}) {
   return favourites.length > 0 ? (
     <div>
-        {favourites.map((job) => (
-            <SingleFavourites key={job._id} job={job} />
+        {favourites.map((job, index) => (
+            <SingleFavourites key={job._id} job={job} index={index}/>
         ))}
     </div>
   ) : (

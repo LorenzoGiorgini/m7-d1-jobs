@@ -1,4 +1,4 @@
-import { ADD_TO_FAVOURITES , REMOVE_FROM_FAVOURITES } from '../actions/actions'
+import { ADD_TO_FAVOURITES , REMOVE_FROM_FAVOURITES, IS_LOADING, STOP_LOADING } from '../actions/actions'
 import { initialState } from '../store/store'
 
 
@@ -14,7 +14,23 @@ const mainReducer = (state = initialState, action) => {
         case REMOVE_FROM_FAVOURITES:
             return {
                 ...state,
-                favourites: state.favourites.filter(item => item.id !== action.payload)
+                favourites: state.favourites.filter((item , i) => i !== action.payload)
+            }
+        case IS_LOADING:
+            return {
+                ...state,
+                home: {
+                    ...state.home,
+                    isLoading: true
+                }
+            }
+        case STOP_LOADING:
+            return {
+                ...state,
+                home: {
+                    ...state.home,
+                    isLoading: false
+                }
             }
         default:
             return state

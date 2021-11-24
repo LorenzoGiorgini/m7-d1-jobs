@@ -9,10 +9,10 @@ import { useNavigate } from "react-router";
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  removeFromFavourites: (id) => {
+  removeFromFavourites: (index) => {
     dispatch({
       type: REMOVE_FROM_FAVOURITES,
-      payload: id,
+      payload: index,
     });
   },
 });
@@ -36,7 +36,7 @@ function SingleFavourites(props) {
             <Button 
             variant="danger"
             className="ml-2"
-            onClick={() => props.removeFromFavourites(props.job._id)}
+            onClick={() => props.removeFromFavourites(props.index)}
             >
                 X
             </Button>
@@ -49,5 +49,6 @@ function SingleFavourites(props) {
     </div>
   );
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleFavourites);

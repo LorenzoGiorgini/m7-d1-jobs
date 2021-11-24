@@ -3,7 +3,11 @@ import mainReducer from "../reducers/reducers";
 
 
 export const initialState = {
-    favourites: []
+    favourites: [],
+    home: {
+        search: "",
+        isLoading: false,
+    },
 }
 
 
