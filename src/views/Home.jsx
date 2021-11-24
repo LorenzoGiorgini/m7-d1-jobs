@@ -10,29 +10,60 @@ import {
 import SingleJob from "../components/SingleJob";
 import SpinnerB from "../components/SpinnerB";
 
-export default function Home() {
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+import { connect } from "react-redux";
+import {IS_LOADING, STOP_LOADING, SET_SEARCH} from "../redux/actions/actions";
+
+
+const mapStateToProps = (state) => {
+  return {
+    home : state.home
+  }
+}
+
+
+const mapDispatchToProps = (dispatch) => ({
+  setLoading : () => {
+    dispatch({
+      type : IS_LOADING,
+      payload : true
+    })
+  },
+  stopLoading : () => {
+    dispatch({
+      type : STOP_LOADING,
+      payload : false
+    })
+  },
+  setSearch : (value) => {
+    dispatch({
+      type : SET_SEARCH,
+      payload : value
+    })
+  }
+})
+
+const Home = (props) => {
+  
   const [jobs, setJobs] = useState([]);
 
   const fetchJobs = async () => {
-    setLoading(true);
+    props.setLoading();
     const response = await fetch(
-      `https://strive-jobs-api.herokuapp.com/jobs?search=${search}&limit=10`
+      `https://strive-jobs-api.herokuapp.com/jobs?search=${props.home.search}&limit=10`
     );
     if (response.ok) {
       const data = await response.json();
       setJobs(data.data);
-      setLoading(false);
+      props.stopLoading();
     }
   };
 
 
   useEffect(() => {
-    if(search !== "") {
+    if(props.home.search !== "") {
       fetchJobs();
     }
-  }, [search])
+  }, [props.home.search])
 
   return (
     <Container>
@@ -41,16 +72,16 @@ export default function Home() {
           <FormControl
             type="text"
             placeholder="Search job offers"
-            value={search}
+            value={props.home.search}
             className="mr-sm-2"
-            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+            onChange={(e) => props.setSearch(e.target.value.toLowerCase())}
           />
           <Button variant="outline-success" onClick={fetchJobs}>
             Search
           </Button>
         </div>
 
-        {loading === true ? (
+        {props.home.isLoading === true ? (
             <div className="w-100 mt-5">
               <div className="d-flex align-items-center justify-content-center w-100">
                 <SpinnerB />
@@ -69,3 +100,6 @@ export default function Home() {
     </Container>
   );
 }
+
+
+export default connect(mapStateToProps , mapDispatchToProps)(Home)
