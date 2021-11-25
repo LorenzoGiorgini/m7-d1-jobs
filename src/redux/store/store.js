@@ -20,7 +20,7 @@ export const initialState = {
 //COMBINE MULTIPLE REDUCERS INTO ONE
 const mainReducer = combineReducers({
   favourites: favouritesReducer,
-  home: jobsReducer,
+  home: jobsReducer
 });
 
 //COMPOSE MULTIPLE MIDDLEWARES

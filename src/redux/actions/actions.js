@@ -1,9 +1,10 @@
 
 
 //Home section 
-export const STOP_LOADING = 'STOP_LOADING'
+export const TOGGLE_LOADER = 'TOGGLE_LOADER'
 export const SET_SEARCH = 'SET_SEARCH'
 export const GET_JOBS = 'GET_JOBS'
+export const IS_ERROR = 'IS_ERROR'
 
 
 //Add to favourites

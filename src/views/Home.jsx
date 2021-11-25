@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   FormControl,
@@ -11,7 +11,7 @@ import SingleJob from "../components/SingleJob";
 import SpinnerB from "../components/SpinnerB";
 
 import { connect } from "react-redux";
-import { STOP_LOADING, SET_SEARCH } from "../redux/actions/actions";
+import fetchJobs from "../redux/reducers/jobs";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,38 +20,16 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  stopLoading: (bool) => {
-    dispatch({
-      type: STOP_LOADING,
-      payload: bool
-    });
-  },
-  setSearch: (value) => {
-    dispatch({
-      type: SET_SEARCH,
-      payload: value,
-    });
-  },
+  getJobs: (search) => {
+    dispatch(fetchJobs(search));
+  }
 });
 
 const Home = (props) => {
-  const [jobs, setJobs] = useState([]);
-
-  const fetchJobs = async () => {
-    props.stopLoading(true);
-    const response = await fetch(
-      `https://strive-jobs-api.herokuapp.com/jobs?search=${props.home.search}&limit=10`
-    );
-    if (response.ok) {
-      const data = await response.json();
-      setJobs(data.data);
-      props.stopLoading(false);
-    }
-  };
-
+ 
   useEffect(() => {
     if (props.home.search !== "") {
-      fetchJobs();
+      props.getJobs(props.home.search);
     }
   }, [props.home.search]);
 
@@ -73,14 +51,15 @@ const Home = (props) => {
               </div>
             </div>
           ) : (
-            props.home.search !== "" && 
-            <div className="d-flex flex-column">
-              <ListGroup>
-                {jobs.map((job) => {
-                  return <SingleJob job={job} />;
-                })}
-              </ListGroup>
-            </div>
+            props.home.search !== "" && (
+              <div className="d-flex flex-column">
+                <ListGroup>
+                  {props.home.jobs.map((job) => {
+                    return <SingleJob job={job} />;
+                  })}
+                </ListGroup>
+              </div>
+            )
           )}
           <Button variant="outline-success" onClick={fetchJobs}>
             Search
