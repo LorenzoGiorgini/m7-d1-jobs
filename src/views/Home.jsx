@@ -11,7 +11,7 @@ import SingleJob from "../components/SingleJob";
 import SpinnerB from "../components/SpinnerB";
 
 import { connect } from "react-redux";
-import { IS_LOADING, STOP_LOADING, SET_SEARCH } from "../redux/actions/actions";
+import { STOP_LOADING, SET_SEARCH } from "../redux/actions/actions";
 
 const mapStateToProps = (state) => {
   return {
@@ -20,16 +20,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setLoading: () => {
-    dispatch({
-      type: IS_LOADING,
-      payload: true,
-    });
-  },
-  stopLoading: () => {
+  stopLoading: (bool) => {
     dispatch({
       type: STOP_LOADING,
-      payload: false,
+      payload: bool
     });
   },
   setSearch: (value) => {
@@ -44,14 +38,14 @@ const Home = (props) => {
   const [jobs, setJobs] = useState([]);
 
   const fetchJobs = async () => {
-    props.setLoading();
+    props.stopLoading(true);
     const response = await fetch(
       `https://strive-jobs-api.herokuapp.com/jobs?search=${props.home.search}&limit=10`
     );
     if (response.ok) {
       const data = await response.json();
       setJobs(data.data);
-      props.stopLoading();
+      props.stopLoading(false);
     }
   };
 
